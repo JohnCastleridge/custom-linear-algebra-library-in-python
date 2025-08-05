@@ -33,7 +33,7 @@ class UnaryMatrixOperationsMixin:
         if self.rows == 1:
             return self[1,1]
         # Laplace expansion
-        return sum([self[1,j]*self.C[1,j] for j in range(1, self.cols+1)])
+        return sum([self[1,j]*self.C(1,j) for j in range(1, self.cols+1)])
     
 
     # === Matrix Transformations ===
