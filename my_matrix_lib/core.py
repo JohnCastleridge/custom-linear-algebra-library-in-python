@@ -63,7 +63,7 @@ class Matrix(
             ["|" + "".join(string for string in row) + "  |" for row in data] +
             ["└" + " "*(num_len+2)*self.cols + "  " + "┘"])
 
-
+    # find where to place
     def map(self, func):
         return self.__class__([
              [func(self.data[row][col])
