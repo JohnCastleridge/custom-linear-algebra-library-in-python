@@ -1,20 +1,49 @@
 from ..exceptions import (
     InvalidDimensionsError,
-    NotSquareError
+    NotSquareError,
+    IndexOutOfBoundsError,
+    InvalidDataError,
+    InvalidShapeError,
+    MatrixValueError,
 )
 
 class UnaryMatrixOperationsMixin:
     def submatrix(self, rows: list[int], cols: list[int]):
+        """ 
+        Returns a submatrix of the current matrix, by only including entries who have indices containd in rows and columns.
+        """
+        if not isinstance(rows, list) or not all(isinstance(i, int) for i in rows):
+            raise InvalidDataError(rows, 'list[int]', operation='submatrix', reason='"rows" must be a list of integers')
+        if not isinstance(cols, list) or not all(isinstance(i, int) for i in cols):
+            raise InvalidDataError(rows, 'list[int]', operation='submatrix', reason='"cols" must be a list of integers')
+
+        if len(set(rows)) != len(rows):
+            raise MatrixValueError(
+                operation='submatrix',
+                reason='indices in "rows" must be unique',
+                value=rows,
+                matrix=self,
+            )
+        if len(set(cols)) != len(cols):
+            raise MatrixValueError(
+                operation='submatrix',
+                reason='indices in "cols" must be unique',
+                value=cols,
+                matrix=self,
+            )
+        if any(i-1 not in range(self.rows) for i in rows):
+            raise IndexOutOfBoundsError(self, rows, axis = 'row', operation='submatrix', reason='An index in "rows" is out of bounds')
+
+        if any(j-1 not in range(self.cols) for j in cols):
+            raise IndexOutOfBoundsError(self, cols, axis = 'col', operation='submatrix', reason='An index in "rows" is out of bounds')
+    
         return self.__class__([
              [self[r,c]
               for c in cols] 
               for r in rows
         ])
 
-    def minor(self, rows: list[int], cols: list[int]):
-        # must be squre after computing the submatrix 
-        #if self.rows - len(rows) != self.cols - len(cols):
-            
+    def minor(self, rows: list[int], cols: list[int]):            
         return self.submatrix(
             [row for row in range(1, self.rows+1) if row not in rows], 
             [col for col in range(1, self.cols+1) if col not in cols]
