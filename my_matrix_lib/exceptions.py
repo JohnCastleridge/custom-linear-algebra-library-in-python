@@ -143,11 +143,7 @@ class InvalidShapeError(ValueError, MatrixError):
 
 class MatrixValueError(ValueError, MatrixError):
     """Raised when a value is semantically invalid for a matrix operation."""
-    def __init__(self, *, 
-                 operation: str = '<unspecified>',
-                 reason: str = 'Invalid value',
-                 value = '<unspecified>',
-                 matrix = '<unspecified>'):
+    def __init__(self, matrix, value, *, operation = '<unspecified>', reason = 'Invalid value',):
         self.operation = operation
         self.reason = reason
         self.value = value
