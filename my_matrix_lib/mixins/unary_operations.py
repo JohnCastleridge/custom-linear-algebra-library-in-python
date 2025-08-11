@@ -74,9 +74,9 @@ class UnaryMatrixOperationsMixin:
         Matrix.T : Alias of this method.
         """
         return self.__class__([
-             [self.data[col][row] 
-              for col in range(self.cols)] 
-              for row in range(self.rows)
+             [self.data[row][col]
+              for row in range(self.rows)] 
+              for col in range(self.cols)
         ])
 
     def conjugate_transpose(self):
