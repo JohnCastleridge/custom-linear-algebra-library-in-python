@@ -6,7 +6,7 @@ from ..exceptions import (
 )
 
 class UnaryMatrixOperationsMixin:
-    def determinant(self) -> any:
+    def determinant(self):
         """
         Returns the determinant of the matrix.
 
@@ -35,9 +35,9 @@ class UnaryMatrixOperationsMixin:
             return self[1,1]
         
         # Laplace expansion
-        return sum([self[1,j]*self.C(1,j) for j in range(1, self.cols+1)])
+        return sum(self[1,j]*self.C(1,j) for j in range(1, self.cols+1))
 
-    def trace(self) -> any:
+    def trace(self):
         """
         Returns the trace of the matrix, which is the sum of the diagonal elements.
         
@@ -58,7 +58,7 @@ class UnaryMatrixOperationsMixin:
         if not self._is_square():
             raise NotSquareError(self, operation="trace")
         
-        return sum(self.data[i][i] for i in range(self.rows))
+        return sum(self[i,i] for i in range(1, self.rows+1))
 
     def transpose(self):
         """
@@ -74,14 +74,14 @@ class UnaryMatrixOperationsMixin:
         Matrix.T : Alias of this method.
         """
         return self.__class__([
-             [self.data[row][col]
-              for row in range(self.rows)] 
-              for col in range(self.cols)
+             [self[row,col]
+              for row in range(1, self.rows+1)] 
+              for col in range(1, self.cols+1)
         ])
 
-    def conjugate_transpose(self):
+    def hermitian_transpose(self):
         """
-        Returns the conjugate transpose (or Hermitian transpose) of the matrix.
+        Returns the Hermitian transpose (or conjugate transpose) of the matrix.
         
         Returns
         -------
@@ -94,9 +94,9 @@ class UnaryMatrixOperationsMixin:
         """
         # z conjugate = |z|^2 / z
         return self.__class__([
-             [z-z if abs(z) < 1e-8 else abs(z)*abs(z) / z
-              for z in row] 
-              for row in self.data
+             [self[i,j]-self[i,j] if abs(self[i,j]) < 1e-8 else abs(self[i,j])*abs(self[i,j]) / self[i,j]
+              for j in range(1, self.cols+1)] 
+              for i in range(1, self.rows+1)
         ]).T
 
     def submatrix(self, rows: list[int], cols: list[int]):
@@ -178,7 +178,7 @@ class UnaryMatrixOperationsMixin:
         if not isinstance(rows, list) or not all(isinstance(i, int) for i in rows) or not rows:
             raise InvalidDataError(rows, 'list[int]', operation='minor', reason='"rows" must be a list of integers')
         if not isinstance(cols, list) or not all(isinstance(j, int) for j in cols) or not cols:
-            raise InvalidDataError(rows, 'list[int]', operation='minor', reason='"cols" must be a list of integers')
+            raise InvalidDataError(cols, 'list[int]', operation='minor', reason='"cols" must be a list of integers')
 
         # check if rows and cols are within bounds
         if any(i-1 not in range(self.rows) for i in rows):
@@ -343,7 +343,7 @@ class UnaryMatrixOperationsMixin:
     det = property(determinant)
     tr = property(trace)
     T = property(transpose)
-    H = property(conjugate_transpose)
+    H = property(hermitian_transpose)
     M = first_minor
     C = cofactor
     comatrix = property(cofactor_matrix)
