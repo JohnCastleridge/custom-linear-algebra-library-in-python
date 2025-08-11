@@ -1,5 +1,4 @@
 from ..exceptions import (
-    InvalidDimensionsError,
     NotSquareError,
     IndexOutOfBoundsError,
     SingularMatrixError,
@@ -7,17 +6,27 @@ from ..exceptions import (
 )
 
 class UnaryMatrixOperationsMixin:
-    def determinant(self) -> float:
+    def determinant(self) -> any:
         """
         Returns the determinant of the matrix.
-        
-        inputs:
-        - None
-        returns:
-        - the determinant of the matrix
 
-        raises:
-        - NotSquareError: if the matrix is not square (determinant is only defined for square matrices)
+        Returns
+        -------
+        float
+        The determinant of the matrix.
+
+        Raises
+        ------
+        NotSquareError
+            If the matrix is not square (determinant is only defined for square matrices)
+        
+        See Also
+        --------
+        Matrix.det : Alias of this method.
+
+        Notes
+        -----
+        The determinant is calculated using Laplace expansion along the first row.
         """
         if not self._is_square():
             raise NotSquareError(self, operation='determinant')
@@ -28,32 +37,41 @@ class UnaryMatrixOperationsMixin:
         # Laplace expansion
         return sum([self[1,j]*self.C(1,j) for j in range(1, self.cols+1)])
 
-    def trace(self) -> float:
+    def trace(self) -> any:
         """
         Returns the trace of the matrix, which is the sum of the diagonal elements.
         
-        inputs:
-        - None
-        returns:
-        - the trace of the matrix
+        Returns
+        -------
+        float
+            the trace of the matrix
 
-        raises:
-        - NotSquareError: if the matrix is not square (trace is only defined for square matrices)
+        Raises
+        ------
+        NotSquareError
+            if the matrix is not square (trace is only defined for square matrices)
+        
+        See Also
+        --------
+        Matrix.tr : Alias of this method.
         """
         if not self._is_square():
             raise NotSquareError(self, operation="trace")
         
         return sum(self.data[i][i] for i in range(self.rows))
 
-    # === Matrix Transformations ===
     def transpose(self):
         """
         Returns the transpose of the matrix. 
         
-        inputs:
-        - None
-        returns:
-        - a new matrix that is the transpose of the current matrix
+        Returns
+        -------
+        Matrix
+            A new matrix that is the transpose of the current matrix
+
+        See Also
+        --------
+        Matrix.T : Alias of this method.
         """
         return self.__class__([
              [self.data[col][row] 
@@ -65,10 +83,14 @@ class UnaryMatrixOperationsMixin:
         """
         Returns the conjugate transpose (or Hermitian transpose) of the matrix.
         
-        inputs:
-        - None
-        returns:
-        - a new matrix that is the transpose of the current matrix with each element conjugated
+        Returns
+        -------
+        Matrix
+            A new matrix that is the transpose of the current matrix with each element conjugated
+
+        See Also
+        --------
+        Matrix.H : Alias of this method.
         """
         # z conjugate = |z|^2 / z
         return self.__class__([
@@ -81,16 +103,26 @@ class UnaryMatrixOperationsMixin:
         """ 
         Returns a submatrix of the current matrix, by only including entries who have row indices containd in "rows" and column indices "cols".
 
-        inputs:
-        - rows: a list of row indices (1-based) to include in the submatrix
-        - cols: a list of column indices (1-based) to include in the submatrix
-        returns:
-        - a new matrix that is a submatrix of the current matrix, containing only the specified
+        Parameters
+        ----------
+        rows : list[int]
+            A list of row indices (1-based) to include in the submatrix
+        cols : list[int]
+            A list of column indices (1-based) to include in the submatrix
 
-        raises:
-        - InvalidDataError: if "rows" or "cols" are not lists of integers
-        - IndexOutOfBoundsError: if any index in "rows" or "cols" is out of bounds
-        - InvalidDimensionsError: if the resulting submatrix is empty (no rows or no columns)
+        Returns
+        -------
+        Matrix
+            A new matrix that is a submatrix of the current matrix, containing only the specified
+
+        Raises
+        ------
+        InvalidDataError
+            if "rows" or "cols" are not lists of integers
+        IndexOutOfBoundsError
+            if any index in "rows" or "cols" is out of bounds
+        InvalidDimensionsError
+            if the resulting submatrix is empty (no rows or no columns)
         """
         # check if rows and cols are lists of integers
         if not isinstance(rows, list) or not all(isinstance(i, int) for i in rows) or not rows:
@@ -118,17 +150,29 @@ class UnaryMatrixOperationsMixin:
         """
         Returns the determinant of the submatrix defined by excluding the rows and columns specified in "rows" and "cols".
 
-        inputs:
-        - rows: a list of row indices (1-based) to exclude from the submatrix
-        - cols: a list of column indices (1-based) to exclude from the submatrix
-        returns:
-        - the determinant of the submatrix formed by excluding the specified rows and columns
+        Parameters
+        ----------
+        rows : list[int]
+            A list of row indices (1-based) to exclude from the submatrix
+        cols : list[int]
+            A list of column indices (1-based) to exclude from the submatrix
 
-        raises:
-        - InvalidDataError: if "rows" or "cols" are not lists of integers
-        - IndexOutOfBoundsError: if any index in "rows" or "cols" is out of bounds
-        - NotSquareError: if the resulting submatrix is not square (determinant is only defined for square matrices)
-        - InvalidDimensionsError: if the resulting submatrix is empty (no rows or no columns)
+            
+        Returns
+        -------
+        float
+            The determinant of the submatrix formed by excluding the specified rows and columns
+
+        Raises
+        ------
+        InvalidDataError
+            If "rows" or "cols" are not lists of integers
+        IndexOutOfBoundsError
+            If any index in "rows" or "cols" is out of bounds
+        NotSquareError
+            If the resulting submatrix is not square (determinant is only defined for square matrices)
+        InvalidDimensionsError
+            If the resulting submatrix is empty (no rows or no columns)
         """
         # check if rows and cols are lists of integers
         if not isinstance(rows, list) or not all(isinstance(i, int) for i in rows) or not rows:
@@ -151,35 +195,67 @@ class UnaryMatrixOperationsMixin:
         """
         Returns the first minor of the element at position (i, j) in the matrix.
 
-        inputs:
-        - i: the row index (1-based) of the element
-        - j: the column index (1-based) of the element
-        returns:
-        - the determinant of the submatrix formed by excluding the i-th row and j-th column
+        Parameters
+        ----------
+        i : int
+            The row index (1-based) of the element
+        j : int
+            the column index (1-based) of the element
+        
+        Returns
+        -------
+        float
+            The determinant of the submatrix formed by excluding the i-th row and j-th column
 
-        raises:
-        - InvalidDataError: if i or j are not integers
-        - IndexOutOfBoundsError: if i or j is out of bounds
-        - NotSquareError: if the resulting submatrix is not square (determinant is only defined for square matrices)
-        - InvalidDimensionsError: if the resulting submatrix is empty (no rows or no columns
+        Raises
+        ------
+        InvalidDataError
+            If i or j are not integers
+        IndexOutOfBoundsError
+            If i or j is out of bounds
+        NotSquareError
+            If the resulting submatrix is not square (determinant is only defined for square matrices)
+        InvalidDimensionsError
+            If the resulting submatrix is empty (no rows or no columns)
+        
+        See Also
+        --------
+        Matrix.M : Alias of this method.
         """
         return self.minor([i], [j])
 
     def cofactor(self, i: int, j: int):
         """
-        Returns the cofactor of the element at position (i, j) in the matrix.
+        Returns the cofactor of the element at position (i, j) in the matrix. 
+        Defined as C(i,j) = (-1)^(i+j) * M(i,j), where M(i,j) is the first minor of the element at (i, j).
 
-        inputs:
-        - i: the row index (1-based) of the element
-        - j: the column index (1-based) of the element
-        returns:
-        - the cofactor of the element at (i, j)
+        Parameters
+        ----------
+        i : int
+            The row index (1-based) of the element
+        j : int
+            The column index (1-based) of the element
 
-        raises:
-        - InvalidDataError: if i or j are not integers
-        - IndexOutOfBoundsError: if i or j is out of bounds
-        - NotSquareError: if the matrix is not square (cofactor is only defined for square matrices)
-        - InvalidDimensionsError: if the matrix is empty (no rows or no columns)
+        Returns
+        -------
+        float
+            The cofactor of the element at (i, j)
+
+
+        Raises
+        ------
+        InvalidDataError
+            If i or j are not integers
+        IndexOutOfBoundsError
+            If i or j is out of bounds
+        NotSquareError
+            If the matrix is not square (cofactor is only defined for square matrices)
+        InvalidDimensionsError
+            If the matrix is empty (no rows or no columns)
+        
+        See Also
+        --------
+        Matrix.C : Alias of this method.
         """
         # check if i and j are integers
         if not isinstance(i, int):
@@ -192,14 +268,21 @@ class UnaryMatrixOperationsMixin:
     def cofactor_matrix(self):
         """
         Returns the cofactor matrix of the current matrix.
+        Defined as a matrix where each element is the cofactor of the corresponding element in the current matrix.
         
-        inputs:
-        - None
-        returns:
-        - a new matrix where each element is the cofactor of the corresponding element in the current matrix
+        returns
+        -------
+        Matrix
+            A new matrix where each element is the cofactor of the corresponding element in the current matrix
 
-        raises:
-        - NotSquareError: if the matrix is not square (cofactor matrix is only defined for square matrices)
+        Raises
+        ------
+        NotSquareError
+            If the matrix is not square (cofactor matrix is only defined for square matrices)
+        
+        See Also
+        --------
+        Matrix.comatrix : Alias of this method.
         """
         return self.__class__([
             [self.C(i,j) 
@@ -210,14 +293,21 @@ class UnaryMatrixOperationsMixin:
     def adjugate_matrix(self):
         """
         Returns the adjugate (or adjoint) matrix of the current matrix. 
+        Defined as the transpose of the cofactor matrix.
         
-        inputs:
-        - None
-        returns:
-        - a new matrix that is the transpose of the cofactor matrix
+        Returns
+        -------
+        Matrix
+            A new matrix that is the transpose of the cofactor matrix
 
-        raises:
-        - NotSquareError: if the matrix is not square (adjugate matrix is only defined for square matrices)
+        Raises
+        ------
+        NotSquareError
+            If the matrix is not square (adjugate matrix is only defined for square matrices)
+        
+        See Also
+        --------
+        Matrix.adj : Alias of this method.
         """
         return self.cofactor_matrix().T
     
@@ -225,14 +315,21 @@ class UnaryMatrixOperationsMixin:
         """
         Returns the inverse of the matrix.
         
-        inputs:
-        - None
-        returns:
-        - a new matrix that is the inverse of the current matrix
+        Returns
+        -------
+        Matrix
+            A new matrix that is the inverse of the current matrix
 
-        raises:
-        - singular matrix error: if the matrix is singular (determinant is zero, hence non-invertible)
-        - NotSquareError: if the matrix is not square (inverse is only defined for square matrices)
+        Raises
+        ------
+        SingularMatrixError
+            If the matrix is singular (determinant is zero, hence non-invertible)
+        NotSquareError
+            If the matrix is not square (inverse is only defined for square matrices)
+        
+        See Also
+        --------
+        Matrix.inv : Alias of this method.
         """
         # check if the inverse exists 
         determinant = self.det
@@ -243,14 +340,12 @@ class UnaryMatrixOperationsMixin:
 
     
     # === Property Aliases ===
-    T = property(transpose)
     det = property(determinant)
+    tr = property(trace)
+    T = property(transpose)
+    H = property(conjugate_transpose)
     M = first_minor
     C = cofactor
     comatrix = property(cofactor_matrix)
     adj = property(adjugate_matrix)
     inv = property(inverse_matrix)
-    hermitian_transpose = conjugate_transpose
-    H = property(conjugate_transpose)
-    adjoint = property(conjugate_transpose)
-    tr = property(trace)
