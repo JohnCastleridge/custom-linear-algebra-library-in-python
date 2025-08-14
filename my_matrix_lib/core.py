@@ -31,9 +31,9 @@ class Matrix(
     def __init__(self, data: list[list[any]]):
         # Validate input matrix structure
         if not isinstance(data, list) or not data or not all(isinstance(row, list) for row in data):
-            raise InvalidDataError(obj=data, expected_type='list[list]', operation='Matrix.__init__', reason='Data must be a non‐empty list of lists')
+            raise InvalidDataError(data, 'list[list]', operation='Matrix.__init__', reason='Data must be a non‐empty list of lists')
         if any(len(row) != len(data[0]) for row in data):
-            raise InvalidShapeError(obj=data, expected_shape=(len(data), len(data[0])), operation='Matrix.__init__', reason='All rows must have the same number of columns')
+            raise InvalidShapeError(data, (len(data), len(data[0])), operation='Matrix.__init__', reason='All rows must have the same number of columns')
 
         self.rows = len(data)
         self.cols = len(data[0])
