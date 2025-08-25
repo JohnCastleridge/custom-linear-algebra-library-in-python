@@ -29,7 +29,7 @@ class UnaryMatrixOperationsMixin:
         The determinant is calculated using Laplace expansion along the first row.
         """
         if not self._is_square():
-            raise NotSquareError(self, operation='determinant')
+            raise NotSquareError(matrix=self, operation='determinant')
         
         if self.rows == 1:
             return self[1,1]
@@ -56,7 +56,7 @@ class UnaryMatrixOperationsMixin:
         Matrix.tr : Alias of this method.
         """
         if not self._is_square():
-            raise NotSquareError(self, operation="trace")
+            raise NotSquareError(matrix=self, operation="trace")
         
         return sum(self[i,i] for i in range(1, self.rows+1))
 
@@ -126,15 +126,15 @@ class UnaryMatrixOperationsMixin:
         """
         # check if rows and cols are lists of integers
         if not isinstance(rows, list) or not all(isinstance(i, int) for i in rows) or not rows:
-            raise InvalidDataError(rows, 'list[int]', operation='submatrix', reason='"rows" must be a list of integers')
+            raise InvalidDataError(obj=rows, expected_type='list[int]', operation='submatrix', reason='"rows" must be a list of integers')
         if not isinstance(cols, list) or not all(isinstance(j, int) for j in cols) or not cols:
-            raise InvalidDataError(cols, 'list[int]', operation='submatrix', reason='"cols" must be a list of integers')
+            raise InvalidDataError(obj=cols, expected_type='list[int]', operation='submatrix', reason='"cols" must be a list of integers')
 
         # check if rows and cols are within bounds
         if any(i-1 not in range(self.rows) for i in rows):
-            raise IndexOutOfBoundsError(self, rows, axis='row', operation='submatrix', reason='An index in "rows" is out of bounds')
+            raise IndexOutOfBoundsError(matrix=self, index=rows, axis='row', operation='submatrix', reason='An index in "rows" is out of bounds')
         if any(j-1 not in range(self.cols) for j in cols):
-            raise IndexOutOfBoundsError(self, cols, axis='col', operation='submatrix', reason='An index in "cols" is out of bounds')
+            raise IndexOutOfBoundsError(matrix=self, index=cols, axis='col', operation='submatrix', reason='An index in "cols" is out of bounds')
 
         # remove duplicates and sort
         rows = sorted(list(set(rows)))
@@ -176,15 +176,15 @@ class UnaryMatrixOperationsMixin:
         """
         # check if rows and cols are lists of integers
         if not isinstance(rows, list) or not all(isinstance(i, int) for i in rows) or not rows:
-            raise InvalidDataError(rows, 'list[int]', operation='minor', reason='"rows" must be a list of integers')
+            raise InvalidDataError(matrix=rows, expected_type='list[int]', operation='minor', reason='"rows" must be a list of integers')
         if not isinstance(cols, list) or not all(isinstance(j, int) for j in cols) or not cols:
-            raise InvalidDataError(cols, 'list[int]', operation='minor', reason='"cols" must be a list of integers')
+            raise InvalidDataError(matrix=cols, expected_type='list[int]', operation='minor', reason='"cols" must be a list of integers')
 
         # check if rows and cols are within bounds
         if any(i-1 not in range(self.rows) for i in rows):
-            raise IndexOutOfBoundsError(self, rows, axis='row', operation='minor', reason='An index in "rows" is out of bounds')
+            raise IndexOutOfBoundsError(matrix=self, index=rows, axis='row', operation='minor', reason='An index in "rows" is out of bounds')
         if any(j-1 not in range(self.cols) for j in cols):
-            raise IndexOutOfBoundsError(self, cols, axis='col', operation='minor', reason='An index in "cols" is out of bounds')
+            raise IndexOutOfBoundsError(matrix=self, index=cols, axis='col', operation='minor', reason='An index in "cols" is out of bounds')
 
         return self.submatrix(
             [row for row in range(1, self.rows+1) if row not in rows], 
@@ -259,9 +259,9 @@ class UnaryMatrixOperationsMixin:
         """
         # check if i and j are integers
         if not isinstance(i, int):
-            raise InvalidDataError(i, 'int', operation='cofactor', reason='"i" must be an integer')
+            raise InvalidDataError(obj=i, expected_type='int', operation='cofactor', reason='"i" must be an integer')
         if not isinstance(j, int):
-            raise InvalidDataError(j, 'int', operation='cofactor', reason='"j" must be an integer')
+            raise InvalidDataError(obj=j, expected_type='int', operation='cofactor', reason='"j" must be an integer')
 
         return (-1)**(i+j) * self.M(i, j)
 
@@ -334,7 +334,7 @@ class UnaryMatrixOperationsMixin:
         # check if the inverse exists 
         determinant = self.det
         if abs(determinant) < 1e-8:
-            raise SingularMatrixError(self, operation='inverse')
+            raise SingularMatrixError(matrix=self, operation='inverse')
         
         return self.adj * (1/determinant)
 
