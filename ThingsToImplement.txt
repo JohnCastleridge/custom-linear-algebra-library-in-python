@@ -1,0 +1,23 @@
+big impelmetion:
+- eigenvalues and eigenvectors
+  * chek if Matrix.math converge
+- global eps
+- global __str__ constats?
+- remove __call__
+- impelmet  __repr__
+
+
+struture:
+- make doctring for method with numpy formting
+- find where to place the Matrix.map method
+- find where to place matrix type functions
+
+types of matrices:
+- Hilbert matrix, link:"https://en.wikipedia.org/wiki/Hilbert_matrix"
+- Vandermonde matrix, linkj:"https://en.wikipedia.org/wiki/Vandermonde_matrix"
+- Block matrix, link:"https://en.wikipedia.org/wiki/Block_matrix"
+
+struture:
+- make doctring for method with numpy formting
+
+miscellaneous:
