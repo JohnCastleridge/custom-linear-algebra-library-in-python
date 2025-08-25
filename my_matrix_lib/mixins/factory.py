@@ -3,10 +3,6 @@ from ..exceptions import (
     NotSquareError
 )
 
-
-#Exchange matrix: https://en.wikipedia.org/wiki/Exchange_matrix
-# https://en.wikipedia.org/wiki/List_of_named_matrices
-
 class MatrixFactoryMixin:
     @classmethod
     def identity(cls, n: int):
