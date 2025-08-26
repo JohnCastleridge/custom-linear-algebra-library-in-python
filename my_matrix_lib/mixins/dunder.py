@@ -19,8 +19,7 @@ class DunderMixin:
         self.data = [row[:] for row in data]
     
     # === Indexing & Callable Access ===
-    def __getitem__(self, idx: tuple[int]) -> any:
-        # allow m[i, j]
+    def __getitem__(self, idx: tuple[int]) -> any: # m[i, j]
         if not isinstance(idx, tuple) or not all(isinstance(i, int) for i in idx):
             raise InvalidDataError(idx, 'tuple[int]', operation='Matrix.__getitem__')
         if not len(idx) == 2:
@@ -35,8 +34,7 @@ class DunderMixin:
         return self.data[i-1][j-1]
 
 
-    def __setitem__(self, idx: tuple[int], entry: any) -> None:
-        # allow m[i, j] = entry
+    def __setitem__(self, idx: tuple[int], entry: any) -> None: # m[i, j] = entry
         if not isinstance(idx, tuple) or not all(isinstance(i, int) for i in idx):
             raise InvalidDataError(idx, 'tuple[int]', operation='Matrix.__setitem__')
         if not len(idx) == 2:
