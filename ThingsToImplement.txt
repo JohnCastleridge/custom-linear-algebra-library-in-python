@@ -13,13 +13,9 @@ struture:
 - make doctring for method with numpy formting
 - find where to place the Matrix.map method
 - find where to place matrix type functions
-- implement custem exaption
+- implement exaption chek for all methods
 
 types of matrices:
-- Hilbert matrix
-- Vandermonde matrix
 - Block matrix
-- Exchange matrix
-
 
 miscellaneous:

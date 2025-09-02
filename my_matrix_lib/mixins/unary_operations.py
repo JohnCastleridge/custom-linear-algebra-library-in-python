@@ -13,7 +13,7 @@ class UnaryMatrixOperationsMixin:
         Returns
         -------
         float
-        The determinant of the matrix.
+            The determinant of the matrix.
 
         Raises
         ------
