@@ -8,6 +8,10 @@ things do do:
 - impelmet  __repr__
 - make linier eq solver using row operation.
 - matrix decometation
+- utils: least sqare method?
+- utils: polinom interpolering
+- ker, im
+- rank
 
 struture:
 - make doctring for method with numpy formting

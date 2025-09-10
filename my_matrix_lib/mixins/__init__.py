@@ -6,6 +6,7 @@ from .elementwise_comparison  import ElementwiseComparisonMixin
 from .factory                 import MatrixFactoryMixin
 from .dunder                  import DunderMixin
 from .math_operations         import MatrixMathMixin
+from .epsilon                 import EpsMixin
 
 __all__ = [
     "BinaryMatrixOperationsMixin",
@@ -16,4 +17,5 @@ __all__ = [
     "MatrixFactoryMixin",
     "DunderMixin",
     "MatrixMathMixin",
+    "EpsMixin",
 ]

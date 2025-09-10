@@ -9,8 +9,3 @@ A = Matrix([
 
 #print(Matrix([[2,3,2],[4,1,7]])*Matrix([[-1,0],[2,3],[-2,1]]))
 
-def f(n,m=None):
-    m=n
-    print(n+m)
-
-f(1)

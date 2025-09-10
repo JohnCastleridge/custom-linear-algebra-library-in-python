@@ -1,35 +1,28 @@
+from math import sqrt, exp, pi
+
 from ..exceptions import (
     InvalidDataError,
     MatrixValueError,
 )
 
 class MatrixFactoryMixin:
-    # === NoName ===
     @classmethod
     def identity(cls, n: int):
         """
-        Returns the identity matrix with dimension n×n
+        Return the identity matrix of size n×n.
 
-        parameters
-        ----------
-        n : int
-            The dimension of the identity matrix to be created.
+        Args:
+            n (int): The dimension of the identity matrix.
 
-        Returns
-        -------
-        Matrix
-            The identity matrix with dimension n×n
+        Returns:
+            Matrix: The n×n identity matrix.
 
-        Raises
-        ------
-        InvalidDataError
-            If n is not an integer
-        MatrixValueError
-            If n is less than or equal to 0
+        Raises:
+            InvalidDataError: If ``n`` is not an integer.
+            MatrixValueError: If ``n`` is less than or equal to 0.
 
-        See Also
-        --------
-        Matrix.I : Alias of this method.
+        See Also:
+            Matrix.I: Alias of this method.
         """
         # check if n are integer
         if not isinstance(n, int):
@@ -41,37 +34,28 @@ class MatrixFactoryMixin:
 
         return cls([
             [1 if i==j else 0 
-            for j in range(n)]
-            for i in range(n)
+             for j in range(n)]
+             for i in range(n)
         ])
     
     @classmethod
     def zeros(cls, n, m=None):
         """
-        Returns the zero / null matrix with dimension n×m
+        Return a zero (null) matrix of size n×m.
 
-        parameters
-        ----------
-        n : int
-            The number of rows of the zero matrix to be created.
-        m : int, optional
-            The number of columns of the zero matrix to be created. If not provided, a square matrix n×n is created.
+        Args:
+            n (int): Number of rows.
+            m (int, optional): Number of columns. If ``None``, returns a square n×n matrix.
 
-        Returns
-        -------
-        Matrix
-            The zero matrix with dimension n×m
+        Returns:
+            Matrix: A matrix of zeros with shape n×m.
 
-        Raises
-        ------
-        InvalidDataError
-            If n or m is not an integer
-        MatrixValueError
-            If n or m is less than or equal to 0
+        Raises:
+            InvalidDataError: If ``n`` or ``m`` (when provided) is not an integer.
+            MatrixValueError: If ``n`` is ≤ 0 or ``m`` (when provided) is ≤ 0.
 
-        See Also
-        --------
-        Matrix.O : Alias of this method.
+        See Also:
+            Matrix.O: Alias of this method.
         """
         # check if n and m are integers
         if not isinstance(n, int):
@@ -91,37 +75,28 @@ class MatrixFactoryMixin:
 
         return cls([
             [0 
-            for j in range(m)]
-            for i in range(n)
+             for j in range(m)]
+             for i in range(n)
         ])
     
     @classmethod
     def ones(cls, n, m=None):
         """
-        Returns the matrix of ones with dimension n×m
+        Return a matrix of ones of size n×m.
 
-        parameters
-        ----------
-        n : int
-            The number of rows of the ones matrix to be created.
-        m : int, optional
-            The number of columns of the ones matrix to be created. If not provided, a square matrix n×n is created.
+        Args:
+            n (int): Number of rows.
+            m (int, optional): Number of columns. If ``None``, returns a square n×n matrix.
 
-        Returns
-        -------
-        Matrix
-            The ones matrix with dimension n×m
+        Returns:
+            Matrix: A matrix filled with ones with shape n×m.
 
-        Raises
-        ------
-        InvalidDataError
-            If n or m is not an integer
-        MatrixValueError
-            If n or m is less than or equal to 0
+        Raises:
+            InvalidDataError: If ``n`` or ``m`` (when provided) is not an integer.
+            MatrixValueError: If ``n`` is ≤ 0 or ``m`` (when provided) is ≤ 0.
 
-        See Also
-        --------
-        Matrix.J : Alias of this method.
+        See Also:
+            Matrix.J: Alias of this method.
         """
         # check if n and m are integers
         if not isinstance(n, int):
@@ -141,31 +116,26 @@ class MatrixFactoryMixin:
         
         return cls([
             [1
-            for j in range(m)]
-            for i in range(n)
+             for j in range(m)]
+             for i in range(n)
         ])
 
     @classmethod
     def exchange(cls, n: int):
         """
-        Returns the exchange matrix with dimension n×n
+        Return the n×n exchange (anti-identity) matrix.
 
-        parameters
-        ----------
-        n : int
-            The dimension of the exchange matrix to be created.
+        The exchange matrix has ones on the anti-diagonal and zeros elsewhere.
 
-        Returns
-        -------
-        Matrix
-            The exchange matrix with dimension n×n
+        Args:
+            n (int): The dimension of the exchange matrix.
 
-        Raises
-        ------
-        InvalidDataError
-            If n is not an integer
-        MatrixValueError
-            If n is less than or equal to 0
+        Returns:
+            Matrix: The n×n exchange matrix.
+
+        Raises:
+            InvalidDataError: If ``n`` is not an integer.
+            MatrixValueError: If ``n`` is less than or equal to 0.
         """
         # check if n are integer
         if not isinstance(n, int):
@@ -177,37 +147,30 @@ class MatrixFactoryMixin:
 
         return cls([
             [1 if i+j==n-1 else 0 
-            for j in range(n)]
-            for i in range(n)
+             for j in range(n)]
+             for i in range(n)
         ])
     
     @classmethod
     def hilbert(cls, n: int):
         """
-        Returns the hilbert matrix with dimension n×n
-            A Hilbert matrix is a square matrix with entries being the unit fractions
-            H(i,j) = 1/(i+j-1)
+        Return the n×n Hilbert matrix.
 
-        parameters
-        ----------
-        n : int
-            The dimension of the hilbert matrix to be created.  
+        A Hilbert matrix is a square matrix with entries
+        ``H[i, j] = 1 / (i + j − 1)`` for ``i, j`` starting at 1.
 
-        Returns
-        -------
-        Matrix
-            The hilbert matrix with dimension n×n
+        Args:
+            n (int): The dimension of the Hilbert matrix.
 
-        Raises
-        ------
-        InvalidDataError
-            If n is not an integer
-        MatrixValueError
-            If n is less than or equal to 0
+        Returns:
+            Matrix: The n×n Hilbert matrix.
 
-        See Also
-        --------
-        Matrix.H : Alias of this method.
+        Raises:
+            InvalidDataError: If ``n`` is not an integer.
+            MatrixValueError: If ``n`` is less than or equal to 0.
+
+        See Also:
+            Matrix.H: Alias of this method.
         """
         # check if n are integer
         if not isinstance(n, int):
@@ -219,15 +182,28 @@ class MatrixFactoryMixin:
 
         return cls([
             [1/(i+j-1) 
-            for j in range(1, n+1)]
-            for i in range(1, n+1)
+             for j in range(1, n+1)]
+             for i in range(1, n+1)
         ])
 
-    # === NoName ===
     @classmethod
     def matrix_unit(cls, i, j, n, m=None):
         """
-        Returns the matrix unit with dimension n×m and aᵢⱼ = 1
+        Return the matrix unit (standard basis matrix) ``E_{ij}`` of size n×m.
+
+        The matrix unit has a single 1 at position ``(i, j)`` and zeros elsewhere.
+
+        Args:
+            i (int): Row index (0-based or 1-based depending on the class interface).
+            j (int): Column index (0-based or 1-based depending on the class interface).
+            n (int): Number of rows.
+            m (int, optional): Number of columns. If ``None``, a square n×n matrix is created.
+
+        Returns:
+            Matrix: The n×m matrix unit with ``a[i, j] = 1``.
+
+        See Also:
+            Matrix.E: Alias of this method.
         """
         if m is None:
             m = n
@@ -240,7 +216,20 @@ class MatrixFactoryMixin:
     @classmethod
     def diagonal(cls, diagonals: list):
         """
-        Returns the square diagonal matrix with the input as diagonal 
+        Return a square diagonal matrix with the given diagonal entries.
+
+        Args:
+            diagonals (list): A non-empty list of diagonal entries.
+
+        Returns:
+            Matrix: A square matrix ``D`` where ``D[i, i] = diagonals[i]`` and all off-diagonal
+            entries are zero.
+
+        Raises:
+            InvalidDataError: If ``diagonals`` is not a non-empty list.
+
+        See Also:
+            Matrix.D: Alias of this method.
         """
         # check if diagonals is an list
         if not isinstance(diagonals, list) or not diagonals:
@@ -248,14 +237,29 @@ class MatrixFactoryMixin:
         
         return cls([
             [diagonals[i] if i==j else 0
-            for j in range(len(diagonals))]
-            for i in range(len(diagonals))
+             for j in range(len(diagonals))]
+             for i in range(len(diagonals))
         ])
     
     @classmethod
     def vandermonde(cls, x: list):
         """
-        Returns the vandermonde matrix
+        Return the square Vandermonde matrix built from the samples ``x``.
+
+        The returned matrix ``V`` has entries ``V[i, j] = x[i]**j`` with ``i, j = 0, …, n-1``,
+        where ``n = len(x)``.
+
+        Args:
+            x (list): A non-empty list of scalar samples.
+
+        Returns:
+            Matrix: The n×n Vandermonde matrix.
+
+        Raises:
+            InvalidDataError: If ``x`` is not a non-empty list.
+
+        See Also:
+            Matrix.V: Alias of this method.
         """
         # check if diagonals is an list
         if not isinstance(x, list) or not x:
@@ -271,8 +275,26 @@ class MatrixFactoryMixin:
     @classmethod
     def fourier(cls, n: int, *, imag=complex(0,1), scale=True):
         """
-        Returns the fourier matrix
-        A Fourier matrix is a scalar multiple of the n-by-n Vandermonde matrix for the roots of unity
+        Return the n×n discrete Fourier matrix.
+
+        This is a (scaled) Vandermonde matrix built from the primitive n-th root of unity
+        ``ω = exp(-2π·imag / n)``. If ``scale`` is ``True``, the matrix is scaled by ``1/√n``
+        to be unitary.
+
+        Args:
+            n (int): The dimension of the Fourier matrix.
+            imag (complex, keyword-only): Imaginary unit to use (default: ``1j``).
+            scale (bool, keyword-only): Whether to apply unitary scaling ``1/√n`` (default: ``True``).
+
+        Returns:
+            Matrix: The n×n Fourier matrix (unitary if ``scale=True``).
+
+        Raises:
+            InvalidDataError: If ``n`` is not an integer.
+            MatrixValueError: If ``n`` is less than or equal to 0.
+
+        See Also:
+            Matrix.F: Alias of this method.
         """
         # check if n are integer
         if not isinstance(n, int):
@@ -282,16 +304,12 @@ class MatrixFactoryMixin:
         if n <= 0:
             raise MatrixValueError(value=n, operation='fourier', reason='"n" must be greater than 0')
 
-        # constants
-        e  = 2.71828182845
-        pi = 3.14159265359
-
         # primitive n-th root of unity
-        ω = e**(-2*pi*imag / n)
+        ω = exp(-2*pi*imag / n)
 
         F = cls.vandermonde([ω**i for i in range(n)])
-        if scale:
-            F = F * 1/(n**0.5)
+        if scale: # make unitary
+            F = F * 1/sqrt(n)
         return F
         
 

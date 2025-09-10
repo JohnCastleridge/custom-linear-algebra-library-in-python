@@ -12,6 +12,7 @@ from .mixins import (
         MatrixFactoryMixin,
         DunderMixin,
         MatrixMathMixin,
+        EpsMixin,
 )
 
 __all__ = ["Matrix"]
@@ -25,10 +26,22 @@ class Matrix(
         MatrixFactoryMixin,
         DunderMixin,
         MatrixMathMixin,
+        EpsMixin,
     ):
 
+    @classmethod
+    def eps(cls):
+        return 1e-8
 
-    def map(self, func):
+    def new_eps(cls, tol):
+        pass
+
+    @property
+    def eps(self):
+        return self.__name__.eps()
+
+
+    def map(self, func: function):
         return self.__class__([
              [func(self.data[row][col])
               for col in range(self.cols)] 
