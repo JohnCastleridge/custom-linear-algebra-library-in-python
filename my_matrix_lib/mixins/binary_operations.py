@@ -1,6 +1,9 @@
+from math import log
+
 from ..exceptions import (
     InvalidDimensionsError,
-    NotSquareError
+    NotSquareError,
+    InvalidDataError,
 )
 
 class BinaryMatrixOperationsMixin:
@@ -10,22 +13,33 @@ class BinaryMatrixOperationsMixin:
         
         [A+B]ᵢⱼ = Aᵢⱼ + Bᵢⱼ
         """
+        if not isinstance(other, type(self)):
+            raise InvalidDataError(
+                obj=other,
+                expected_type=type(self).__name__,
+                operation="matrix_addition",
+                reason='"other must be an "Matrix"',
+            )
+        
         if self._have_same_size(other):
             raise InvalidDimensionsError(self, other, 
                 operation="matrix addition",
                 reason="Matrices have different dimensions"
             )
+        
+        rows, cols = self.rows, self.cols
         return self.__class__([
              [self(row,col) + other(row,col) 
-              for col in range(self.cols)] 
-              for row in range(self.rows)
+              for col in range(1, cols+1)] 
+              for row in range(1, rows+1)
         ])
 
     def scalar_addition(self, scaler):
+        rows, cols = self.rows, self.cols
         return self.__class__([
-             [scaler + self(row,col)
-              for col in range(self.cols)] 
-              for row in range(self.rows)
+             [scaler + self[row,col]
+              for col in range(1, cols+1)] 
+              for row in range(1, rows+1)
         ])
 
     def matrix_multiplication(self, other):
@@ -36,15 +50,25 @@ class BinaryMatrixOperationsMixin:
         
         Only defined for matrices with where the number of columns in the first is the same as the number of rows in the last
         """
+        if not isinstance(other, type(self)):
+            raise InvalidDataError(
+                obj=other,
+                expected_type=type(self).__name__,
+                operation="matrix_multiplication",
+                reason="Operand must be the same matrix type as self",
+            )
+
         if self.cols != other.rows:
             raise InvalidDimensionsError(self, other, 
                 operation="matrix multiplication",
                 reason="column count of first ≠ row count of last"
             )
+        
+        rows, cols = self.rows, self.cols
         return self.__class__([
-            [sum(self(i,r)*other(r,j) for r in range(self.cols))
-             for j in range(other.cols)] 
-             for i in range(self.rows)
+            [sum(self[i,r]*other[r,j] for r in range(cols))
+             for j in range(1, cols+1)] 
+             for i in range(1, rows+1)
         ])
 
     def scalar_multiplication(self, scaler):
@@ -77,7 +101,7 @@ class BinaryMatrixOperationsMixin:
         if base >= 0:
             pass
 
-        return (_ln(base)*self).math.exp()
+        return (log(base)*self).math.exp()
 
     def hadamard_product(self, other):
         if self._have_same_size(other):
@@ -105,21 +129,5 @@ class BinaryMatrixOperationsMixin:
              for r in range(self.rows)
              for v in range(other.rows)
             ])
-
-# === utils ===
-def _ln(x, tol=1e-9, max_iterations=1000):
-    """
-    Compute ln(x) by Newton’s method solving
-    f(y) = e^y - x = 0
-    """
-    e = 2.71828182846
-    y = x-1 # y_0 guess
-    for _ in range(max_iterations):
-        delta = x*e**(-y)-1
-        y += delta
-        if abs(delta) < tol:
-            return y
-    raise RuntimeError(f'"ln" failed to converge for x={x} with a tolerance of {tol} after {max_iterations} iterations')
-
 
 

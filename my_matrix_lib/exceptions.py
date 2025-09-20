@@ -1,12 +1,13 @@
-__all__ = ["MatrixError", 
-           "InvalidDimensionsError",
-           "NotSquareError",
-           "SingularMatrixError",
-           "IndexOutOfBoundsError",
-           "InvalidDataError",
-           "InvalidShapeError",
-           "MatrixValueError",
-           ]
+__all__ = [
+    "MatrixError", 
+    "InvalidDimensionsError",
+    "NotSquareError",
+    "SingularMatrixError",
+    "IndexOutOfBoundsError",
+    "InvalidDataError",
+    "InvalidShapeError",
+    "MatrixValueError",
+]
 
 class MatrixError(Exception):
     """Base class for all matrix-related exceptions."""

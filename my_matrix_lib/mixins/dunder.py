@@ -1,3 +1,5 @@
+
+from typing import Self
 from ..exceptions import (
     IndexOutOfBoundsError,
     InvalidDataError,
@@ -79,7 +81,14 @@ class DunderMixin:
     def __repr__(self):
         pass
 
-    # === Dunder Operations ===
+    # === NoName ===
+    def __contains__(self, item): # item "in" matrix
+        return item in [entry for row in self.data for entry in row]
+    
+    def __iter__(self): # for entry "in" matrix
+        return (entry for row in self.data for entry in row)
+
+    # === arithmetic operators ===
     def __add__(self, other): # +
         if isinstance(other, self.__class__):
             return self.matrix_addition(other)
@@ -88,7 +97,7 @@ class DunderMixin:
     def __sub__(self, other): # -
         return self + -other
 
-    def __mul__(self, other): # *
+    def __mul__(self, other) -> Self: # *
         if isinstance(other, self.__class__):
             return self.matrix_multiplication(other)
         return self.scalar_multiplication(other)
@@ -111,7 +120,7 @@ class DunderMixin:
         return self * -1
 
 
-    # === Dunder NoName ===
+    # === NoName ===
     def __radd__(self, other):
         return self.__add__(other)
 
@@ -123,7 +132,7 @@ class DunderMixin:
         return self.scalar_exponentiation(other)
 
 
-    # === Comparison Dunder Methods ===
+    # === Comparison Methods ===
     def __eq__(self, other): # =
         return self.elementwise_equal(other)
 
@@ -148,12 +157,3 @@ class DunderMixin:
 
     def __and__(self, other): # &&
         return self.elementwise_AND(other)
-    
-    # === NoName ===
-    def __contains__(self, item): # item "in" matrix
-        return item in [entry for row in self.data for entry in row]
-    
-    def __iter__(self): # for entry "in" matrix
-        return (entry for row in self.data for entry in row)
-
-
