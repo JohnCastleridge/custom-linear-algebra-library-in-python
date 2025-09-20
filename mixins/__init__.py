@@ -7,6 +7,7 @@ from .factory                 import MatrixFactoryMixin
 from .dunder                  import DunderMixin
 from .math_operations         import MatrixMathMixin
 from .epsilon                 import EpsMixin
+from .helper                  import HelperMixin
 
 __all__ = [
     "BinaryMatrixOperationsMixin",
@@ -18,4 +19,5 @@ __all__ = [
     "DunderMixin",
     "MatrixMathMixin",
     "EpsMixin",
+    "HelperMixin",
 ]

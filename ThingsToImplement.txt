@@ -12,6 +12,7 @@ things do do:
 - utils: polinom interpolering
 - ker, im
 - rank
+- Random matrix
 
 struture:
 - make doctring for method with numpy formting

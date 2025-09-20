@@ -11,7 +11,7 @@ from ..exceptions import (
 
 class HelperMixin:
     def _have_same_size(self, other):
-        return self.rows != other.rows or self.cols != other.cols
+        return self.rows == other.rows and self.cols == other.cols
     
     def _is_square(self):
         return self.rows == self.cols

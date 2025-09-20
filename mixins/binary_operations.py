@@ -66,7 +66,7 @@ class BinaryMatrixOperationsMixin:
         
         rows, cols = self.rows, self.cols
         return self.__class__([
-            [sum(self[i,r]*other[r,j] for r in range(cols))
+            [sum(self[i,r]*other[r,j] for r in range(1, cols+1))
              for j in range(1, cols+1)] 
              for i in range(1, rows+1)
         ])
