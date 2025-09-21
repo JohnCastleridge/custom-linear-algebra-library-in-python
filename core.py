@@ -1,10 +1,3 @@
-from typing import Callable, Self
-
-from .exceptions import (
-    InvalidDataError,
-    InvalidShapeError,
-)
-
 from .mixins import (
         BinaryMatrixOperationsMixin, 
         UnaryMatrixOperationsMixin,
@@ -32,12 +25,4 @@ class Matrix(
         EpsMixin,
         HelperMixin,
     ):
-
-    # === NoName ===
-    def map(self, func: Callable) -> Self:
-        return self.__class__([
-             [func(self.data[row][col])
-              for col in range(self.cols)] 
-              for row in range(self.rows)
-        ])
-
+    pass

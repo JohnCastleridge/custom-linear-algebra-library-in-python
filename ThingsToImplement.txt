@@ -1,8 +1,8 @@
 things do do:
-- implement norm
+- implement norms
 - eigenvalues and eigenvectors
 - chek if Matrix.math converge
-- global eps
+- finish global eps
 - global __str__ constats?
 - remove __call__
 - impelmet  __repr__
@@ -13,7 +13,7 @@ things do do:
 - ker, im
 - rank
 - Random matrix
-- tets function
+- test function
 
 struture:
 - make doctring for method with numpy formting

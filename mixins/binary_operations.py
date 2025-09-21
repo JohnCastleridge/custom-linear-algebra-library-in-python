@@ -1,3 +1,4 @@
+from typing import Callable, Self
 from math import log
 
 from ..exceptions import (
@@ -7,7 +8,7 @@ from ..exceptions import (
 )
 
 class BinaryMatrixOperationsMixin:
-    def matrix_addition(self, other):
+    def matrix_addition(self, other: Self) -> Self:
         """
         element wise addition of two matrices with the same size
         
@@ -34,7 +35,7 @@ class BinaryMatrixOperationsMixin:
               for row in range(1, rows+1)
         ])
 
-    def scalar_addition(self, scaler):
+    def scalar_addition(self, scaler) -> Self:
         rows, cols = self.rows, self.cols
         return self.__class__([
              [scaler + self[row,col]
@@ -42,7 +43,7 @@ class BinaryMatrixOperationsMixin:
               for row in range(1, rows+1)
         ])
 
-    def matrix_multiplication(self, other):
+    def matrix_multiplication(self, other: Self) -> Self:
         """
         matrix multiplication
         
@@ -78,7 +79,7 @@ class BinaryMatrixOperationsMixin:
               for row in range(self.rows)
         ])
 
-    def matrix_exponentiation(self, n: int):
+    def matrix_exponentiation(self, n: int) -> Self:
         if not self._is_square():
             raise NotSquareError(self, 
                 operation="matrix exponentiation"
@@ -92,7 +93,7 @@ class BinaryMatrixOperationsMixin:
             return self.I(self.rows)
         return self.matrix_exponentiation(n-1) * self
 
-    def scalar_exponentiation(self, base):
+    def scalar_exponentiation(self, base) -> Self:
         if not self._is_square():
             raise NotSquareError(self, 
                 operation="scalar exponentiation of matrix"
@@ -103,7 +104,7 @@ class BinaryMatrixOperationsMixin:
 
         return (log(base)*self).math.exp()
 
-    def hadamard_product(self, other):
+    def hadamard_product(self, other: Self) -> Self:
         if self._have_same_size(other):
             raise InvalidDimensionsError(self, other, 
                 operation="hadamard product",
@@ -116,11 +117,11 @@ class BinaryMatrixOperationsMixin:
               for row in range(self.rows)
         ])
 
-    def kronecker_product(self, other):
+    def kronecker_product(self, other: Self) -> Self:
         """
         kronecker product
         
-        [A ⊗ B]_{pr+v,qs+w} = a_{r,s}⋅ {b_v,w}
+        [A ⊗ B]_{pr+v,qs+w} = a_{r,s} ⋅ b_{v,w}
         """
         return self.__class__([
             [self(r, s) * other(v, w)
@@ -130,4 +131,9 @@ class BinaryMatrixOperationsMixin:
              for v in range(other.rows)
             ])
 
-
+    def map(self, func: Callable) -> Self:
+        return self.__class__([
+             [func(self.data[row][col])
+              for col in range(self.cols)] 
+              for row in range(self.rows)
+        ])
