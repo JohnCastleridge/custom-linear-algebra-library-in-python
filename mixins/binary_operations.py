@@ -4,7 +4,7 @@ from math import log
 from ..exceptions import (
     InvalidDimensionsError,
     NotSquareError,
-    InvalidDataError,
+    MatrixValueError,
 )
 
 class BinaryMatrixOperationsMixin:
@@ -14,28 +14,19 @@ class BinaryMatrixOperationsMixin:
         
         [A+B]ᵢⱼ = Aᵢⱼ + Bᵢⱼ
         """
-        if not isinstance(other, type(self)):
-            raise InvalidDataError(
-                obj=other,
-                expected_type=type(self).__name__,
-                operation="matrix_addition",
-                reason='"other must be an "Matrix"',
-            )
-        
-        if self._have_same_size(other):
-            raise InvalidDimensionsError(self, other, 
-                operation="matrix addition",
-                reason="Matrices have different dimensions"
-            )
-        
+        operation="matrix_addition"
+        self._validate_other_type(other, operation=operation)
+        self._validate_same_size(other, operation=operation, reason="Matrices have different dimensions")
+
         rows, cols = self.rows, self.cols
         return self.__class__([
-             [self(row,col) + other(row,col) 
-              for col in range(1, cols+1)] 
+             [self[row,col] + other[row,col] 
+              for col in range(1, cols+1)]
               for row in range(1, rows+1)
         ])
 
-    def scalar_addition(self, scaler) -> Self:
+    def scalar_addition(self, scaler: any) -> Self:
+        # chek scaler
         rows, cols = self.rows, self.cols
         return self.__class__([
              [scaler + self[row,col]
@@ -51,17 +42,11 @@ class BinaryMatrixOperationsMixin:
         
         Only defined for matrices with where the number of columns in the first is the same as the number of rows in the last
         """
-        if not isinstance(other, type(self)):
-            raise InvalidDataError(
-                obj=other,
-                expected_type=type(self).__name__,
-                operation="matrix_multiplication",
-                reason="Operand must be the same matrix type as self",
-            )
-
+        operation="matrix_multiplication"
+        self._validate_other_type(other, operation=operation)
         if self.cols != other.rows:
             raise InvalidDimensionsError(self, other, 
-                operation="matrix multiplication",
+                operation="matrix_multiplication",
                 reason="column count of first ≠ row count of last"
             )
         
@@ -72,39 +57,42 @@ class BinaryMatrixOperationsMixin:
              for i in range(1, rows+1)
         ])
 
-    def scalar_multiplication(self, scaler):
+    def scalar_multiplication(self, scaler: any) -> Self:
+        # chek scaler
+        rows, cols = self.rows, self.cols
         return self.__class__([
-             [scaler * self(row,col)
-              for col in range(self.cols)] 
-              for row in range(self.rows)
+             [scaler * self[row,col]
+              for col in range(1, cols+1)] 
+              for row in range(1, rows+1)
         ])
 
-    def matrix_exponentiation(self, n: int) -> Self:
+    def matrix_exponentiation(self, exponent: int) -> Self:
+        operation="matrix_exponentiation"
         if not self._is_square():
-            raise NotSquareError(self, 
-                operation="matrix exponentiation"
-            )
-        if not isinstance(n, int):
-            pass
+            raise NotSquareError(self, operation=operation)
+        if not isinstance(exponent, int):
+            raise InvalidDataError(obj=exponent, expected_type='int', operation=operation, reason='"exponent" must be an integer')
         
-        if n < 0:
-            return self.inv ** -n
-        if n == 0:
+        if exponent < 0:
+            return self.inv.matrix_exponentiation(-exponent)
+        if exponent == 0:
             return self.I(self.rows)
-        return self.matrix_exponentiation(n-1) * self
+        return self.matrix_exponentiation(exponent-1) * self
 
-    def scalar_exponentiation(self, base) -> Self:
+    def scalar_exponentiation(self, base: any) -> Self:
+        """
+        """
+        operation="scalar_exponentiation"
+        if base <= 0:
+            raise MatrixValueError(value=base, operation=operation, reason='"base" must be an non-negetive')
         if not self._is_square():
-            raise NotSquareError(self, 
-                operation="scalar exponentiation of matrix"
-            )
+            raise NotSquareError(self, operation=operation)
         
-        if base >= 0:
-            pass
-
         return (log(base)*self).math.exp()
 
     def hadamard_product(self, other: Self) -> Self:
+        operation="hadamard_product"
+        self._validate_same_size(other, operation=operation, reason="Matrices have different dimensions")
         if self._have_same_size(other):
             raise InvalidDimensionsError(self, other, 
                 operation="hadamard product",
