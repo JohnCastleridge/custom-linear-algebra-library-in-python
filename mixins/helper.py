@@ -23,7 +23,7 @@ class HelperMixin:
         return all([value-round(value) == 0 for row in self.data for value in row])
     
     # === Helpers ===
-    def _validate_other_type(self, other, *, operation: str) -> None:
+    def _validate_other_type(self, other, *, operation: str = "<unspecified>", reason: str = "Operand must be the same matrix type as self") -> None:
         """Validate that ``other`` is the same (or subclass-compatible) type.
 
         Args:
@@ -39,10 +39,10 @@ class HelperMixin:
                 obj=other,
                 expected_type=type(self).__name__,
                 operation=operation,
-                reason="Operand must be the same matrix type as self",
+                reason=reason,
             )
         
-    def _validate_same_size(self, other, *, operation: str) -> None:
+    def _validate_same_size(self, other, *, operation: str = "<unspecified>", reason: str = "Matrices have different dimensions") -> None:
         """Validate that ``self`` and ``other`` have identical shapes.
 
         Args:
@@ -57,13 +57,11 @@ class HelperMixin:
                 first=self,
                 second=other,
                 operation=operation,
-                reason="Matrices have different dimensions",
+                reason=reason,
             )
 
-    def _validate_boolean_matrix(self, *, operation: str) -> None:
+    def _validate_boolean_matrix(self, *, operation: str = "<unspecified>", reason: str = "Operand is not a boolean matrix") -> None:
         """Validate that ``self`` is a boolean matrix.
-
-        Relies on the implementation-provided ``_is_boolean_matrix()``.
 
         Args:
             operation: Operation name used in error messages.
@@ -75,5 +73,5 @@ class HelperMixin:
             raise MatrixValueError(
                 value=self,
                 operation=operation,
-                reason="Operand is not a boolean matrix",
+                reason=reason,
             )
