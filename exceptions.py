@@ -248,7 +248,7 @@ class InvalidShapeError(ValueError, MatrixError):
 
 class MatrixValueError(ValueError, MatrixError):
     """Raised when a value is semantically invalid for a matrix operation."""
-    def __init__(self, matrix=None, value=None, operation='<unspecified>', reason='Invalid value',):
+    def __init__(self, matrix=None, value=None, operation='<unspecified>', reason='Invalid value'):
         """Initialize the error.
 
         Args:

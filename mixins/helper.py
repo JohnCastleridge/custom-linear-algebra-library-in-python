@@ -23,7 +23,7 @@ class HelperMixin:
         return all([value-round(value) == 0 for row in self.data for value in row])
     
     # === Helpers ===
-    def _validate_other_type(self, other, *, operation: str = "<unspecified>", reason: str = "Operand must be the same matrix type as self") -> None:
+    def _validate_other_type(self, other, *, operation: str = "<unspecified>", reason: str = 'Operand must be an "Matrix"') -> None:
         """Validate that ``other`` is the same (or subclass-compatible) type.
 
         Args:
