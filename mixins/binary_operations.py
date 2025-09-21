@@ -1,4 +1,4 @@
-from typing import Callable, Self
+from typing import Self, Any, Callable
 from math import log
 
 from ..exceptions import (
@@ -25,7 +25,7 @@ class BinaryMatrixOperationsMixin:
               for row in range(1, rows+1)
         ])
 
-    def scalar_addition(self, scaler: any) -> Self:
+    def scalar_addition(self, scaler: Any) -> Self:
         # chek scaler
         rows, cols = self.rows, self.cols
         return self.__class__([
@@ -57,7 +57,7 @@ class BinaryMatrixOperationsMixin:
              for i in range(1, rows+1)
         ])
 
-    def scalar_multiplication(self, scaler: any) -> Self:
+    def scalar_multiplication(self, scaler: Any) -> Self:
         # chek scaler
         rows, cols = self.rows, self.cols
         return self.__class__([
@@ -79,11 +79,11 @@ class BinaryMatrixOperationsMixin:
             return self.I(self.rows)
         return self.matrix_exponentiation(exponent-1) * self
 
-    def scalar_exponentiation(self, base: any) -> Self:
+    def scalar_exponentiation(self, base: Any) -> Self:
         """
         """
         operation="scalar_exponentiation"
-        if base <= 0:
+        if base < 0:
             raise MatrixValueError(value=base, operation=operation, reason='"base" must be an non-negetive')
         if not self._is_square():
             raise NotSquareError(self, operation=operation)
