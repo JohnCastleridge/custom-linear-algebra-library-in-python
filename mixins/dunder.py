@@ -7,19 +7,6 @@ from ..exceptions import (
 )
 
 class DunderMixin:
-    # === Initialization ===
-    def __init__(self, data: list[list[any]]):
-        # Validate input matrix structure
-        if not isinstance(data, list) or not data or not all(isinstance(row, list) for row in data):
-            raise InvalidDataError(obj=data, expected_type='list[list]', operation='Matrix.__init__', reason='Data must be a non‐empty list of lists')
-        if any(len(row) != len(data[0]) for row in data):
-            raise InvalidShapeError(obj=data, expected_shape=(len(data), len(data[0])), operation='Matrix.__init__', reason='All rows must have the same number of columns')
-
-        self.rows = len(data)
-        self.cols = len(data[0])
-        self.shape = (self.rows, self.cols)
-        self.data = [row[:] for row in data]
-    
     # === Indexing & Callable Access ===
     def __getitem__(self, idx: tuple[int]) -> any: # m[i, j]
         if not isinstance(idx, tuple) or not all(isinstance(i, int) for i in idx):
