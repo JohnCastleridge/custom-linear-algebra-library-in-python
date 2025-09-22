@@ -13,7 +13,9 @@ things do do:
 - ker, im
 - rank
 - Random matrix
-- test function
+- test function4
+- implemnt custem/complax log on scalar_exponentiation
+- standerize ASCII ormant for math
 
 struture:
 - make doctring for method with numpy formting
