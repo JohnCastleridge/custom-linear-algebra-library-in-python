@@ -14,8 +14,7 @@ things do do:
 - rank
 - Random matrix
 - test function4
-- implemnt custem/complax log on scalar_exponentiation
-- standerize ASCII ormant for math
+- standerize ASCII formant for math
 
 struture:
 - make doctring for method with numpy formting
@@ -25,5 +24,6 @@ struture:
 
 types of matrices:
 - Block matrix
+- ones/zeros_like
 
 miscellaneous:

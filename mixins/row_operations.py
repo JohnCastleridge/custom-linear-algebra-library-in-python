@@ -1,18 +1,13 @@
+from typing import Self
+
 from ..exceptions import (
     InvalidDataError,
     IndexOutOfBoundsError,
 )
 
 class MatrixRowOperationsMixin:
-    """Elementary row operations (EROs) for matrices.
-
-    Notes:
-        - Row indices are **1-based** in the public API (i.e., the top row is ``1``).
-        - All operations return a **new** matrix; the original is not modified.
-    """
-
     # === Elementary Row Operations ===
-    def row_switching(self, i: int, j: int):
+    def row_switching(self, i: int, j: int) -> Self:
         """
         Swap two rows (``Rᵢ ↔ Rⱼ``).
 
@@ -37,10 +32,10 @@ class MatrixRowOperationsMixin:
             raise IndexOutOfBoundsError(matrix=self, index=(i, j), operation='row switching', reason='At least one of the indices is out of bounds')
 
         return self.__class__([
-            self.data[i-1] if idx == j-1 else 
-            self.data[j-1] if idx == i-1 else 
+            self._data[i-1] if idx == j-1 else 
+            self._data[j-1] if idx == i-1 else 
             row[:] 
-            for idx, row in enumerate(self.data)
+            for idx, row in enumerate(self._data)
         ])
 
     def row_multiplication(self, i: int, k):
@@ -67,9 +62,9 @@ class MatrixRowOperationsMixin:
             raise ValueError('Can not multiply row with 0')
 
         return self.__class__([
-            [k*a for a in self.data[i-1]] if idx == i-1 else 
+            [k*a for a in self._data[i-1]] if idx == i-1 else 
             row[:] 
-            for idx, row in enumerate(self.data)
+            for idx, row in enumerate(self._data)
         ])
 
     def row_addition(self, i: int, j: int, k):
@@ -96,9 +91,9 @@ class MatrixRowOperationsMixin:
             raise IndexOutOfBoundsError(matrix=self, index=(i, j), operation='row addition')
         
         return self.__class__([
-            [self.data[i-1][idx]+k*self.data[j-1][idx] for idx in range(self.cols)] 
-            if row == self.data[i-1] else row[:] 
-            for row in self.data
+            [self._data[i-1][idx]+k*self._data[j-1][idx] for idx in range(self.cols)] 
+            if row == self._data[i-1] else row[:] 
+            for row in self._data
         ])
     
     def row_division(self, i: int, k):

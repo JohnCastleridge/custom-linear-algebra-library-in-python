@@ -157,7 +157,7 @@ class BinaryMatrixOperationsMixin:
             return type(self).I(self.rows)
         return self.matrix_exponentiation(exponent-1) * self
 
-    def scalar_exponentiation(self, base: Any) -> Self:
+    def scalar_exponentiation(self, base: Any, *, ln: Callable | None = None) -> Self:
         """Scalar-to-matrix power ``base**A`` via ``exp(log(base) * A)``.
 
         Interprets the scalar-matrix power using the identity
@@ -177,12 +177,17 @@ class BinaryMatrixOperationsMixin:
             ``__rpow__``: Supports ``base ** A`` via Python's power function.``
         """
         operation="scalar_exponentiation"
-        if base <= 0:
-            raise MatrixValueError(value=base, operation=operation, reason='"base" must be an non-negetive')
+        if base <= 0 and ln is None:
+            raise MatrixValueError(value=base, operation=operation, reason='"base" must be strictly positive')
         if not self._is_square():
             raise NotSquareError(self, operation=operation)
         
-        return (log(base)*self).math.exp()
+        if ln is None:
+            ln = lambda base: log(base)
+
+        if abs(base-1) < type(self).eps():
+            return type(self).I(self.rows)
+        return (ln(base)*self).math.exp()
 
     def hadamard_product(self, other: Self) -> Self:
         """Elementwise (Hadamard) product ``A ∘ B``.
