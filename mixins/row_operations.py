@@ -1,4 +1,4 @@
-from typing import Self
+from typing import Self, Any
 
 from ..exceptions import (
     InvalidDataError,
@@ -38,7 +38,7 @@ class MatrixRowOperationsMixin:
             for idx, row in enumerate(self._data)
         ])
 
-    def row_multiplication(self, i: int, k):
+    def row_multiplication(self, i: int, k: Any=1) -> Self:
         """
         Scale a row by a nonzero scalar (``k⋅Rᵢ → Rᵢ``).
 
@@ -67,7 +67,7 @@ class MatrixRowOperationsMixin:
             for idx, row in enumerate(self._data)
         ])
 
-    def row_addition(self, i: int, j: int, k):
+    def row_addition(self, i: int, j: int, k: Any=1) -> Self:
         """
         Add a multiple of one row to another (``Rᵢ + k⋅Rⱼ → Rᵢ``).
 
@@ -96,39 +96,27 @@ class MatrixRowOperationsMixin:
             for row in self._data
         ])
     
-    def row_division(self, i: int, k):
-        """
-        Divide a row by a nonzero scalar (``Rᵢ / k → Rᵢ``).
+    # === Elementary Column Operations ===
+    def column_switching(self, i: int, j: int) -> Self:
+        return self.T.row_switching(i, j).T
 
-        Equivalent to scaling row ``i`` by ``1/k``.
+    def column_multiplication(self, i: int, k: Any=1) -> Self:
+        return self.T.row_multiplication(i, k).T
 
-        Args:
-            i (int): 1-based index of the row to divide.
-            k: Nonzero scalar divisor.
+    def column_addition(self, i: int, j: int, k: Any=1) -> Self:
+        return self.T.row_addition(i, j, k).T
 
-        Returns:
-            Matrix: A new matrix with row ``i`` divided by ``k``.
+    # === NoName ===
+    def reduced_row_echelon_form(self) -> Self:
+        pass
 
-        Raises:
-            ZeroDivisionError: If ``k == 0``.
-            InvalidDataError: If ``i`` is not an integer (raised by the underlying call).
-            IndexOutOfBoundsError: If ``i`` is outside ``[1 .. rows]`` (raised by the underlying call).
-            ValueError: If the implied multiplier ``1/k`` is treated as zero by tolerance (``|1/k| < 1e-8``).
-        """
-        return self.row_multiplication(i, 1/k)
+    # === NoName ===
+    def rank(self) -> int:
+        pass
+    
+    def kernel(self) -> int:
+        pass
 
-    def row_subtraction(self, i: int, j: int, k):
-        """
-        Subtract a multiple of one row from another (``Rᵢ - k⋅Rⱼ → Rᵢ``).
-
-        Equivalent to ``row_addition(i, j, -k)``.
-
-        Args:
-            i (int): 1-based index of the destination row (modified in-place conceptually).
-            j (int): 1-based index of the source row.
-            k: Scalar multiplier applied to row ``j`` before subtraction.
-
-        Returns:
-            Matrix: A new matrix where row ``i`` is replaced by ``Rᵢ - k⋅Rⱼ``.
-        """
-        return self.row_addition(i, j, -k)
+    # 
+    RREF = property(reduced_row_echelon_form)
+    ker
