@@ -20,7 +20,7 @@ class DunderMixin:
             raise IndexOutOfBoundsError(self, j, axis = 'col', operation='Matrix.__getitem__', reason='The second index is out of bounds')
         
         # convert from input 1-based to internal 0-based
-        return self.data[i-1][j-1]
+        return self._data[i-1][j-1]
 
 
     def __setitem__(self, idx: tuple[int], entry: any) -> None: # m[i, j] = entry
@@ -35,7 +35,7 @@ class DunderMixin:
             raise IndexOutOfBoundsError(self, j, axis = 'col', operation='Matrix.__setitem__', reason='The second index is out of bounds')
         
         # convert from input 1-based to internal 0-based
-        self.data[i-1][j-1] = entry
+        self._data[i-1][j-1] = entry
 
 
     def __call__(self, i, j):
@@ -49,9 +49,9 @@ class DunderMixin:
         column_padding = 2
         
         if self._is_integer_matrix():
-            data = [[str(entry) for entry in row] for row in self.data]
+            data = [[str(entry) for entry in row] for row in self._data]
         else:
-            data = [[f'{entry:.{decimal_places}f}' for entry in row] for row in self.data]
+            data = [[f'{entry:.{decimal_places}f}' for entry in row] for row in self._data]
         
         
         num_len = max(len(string) if '-' not in string else len(string)-1 
@@ -70,10 +70,10 @@ class DunderMixin:
 
     # === NoName ===
     def __contains__(self, item): # item "in" matrix
-        return item in [entry for row in self.data for entry in row]
+        return item in [entry for row in self._data for entry in row]
     
     def __iter__(self): # for entry "in" matrix
-        return (entry for row in self.data for entry in row)
+        return (entry for row in self._data for entry in row)
 
     # === arithmetic operators ===
     def __add__(self, other): # +
