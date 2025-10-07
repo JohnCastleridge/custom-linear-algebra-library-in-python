@@ -1,29 +1,28 @@
 things do do:
-- implement norms
+- Reduced row echelon form
+- liniar eq solver
+- nullity , rank
 - eigenvalues and eigenvectors
 - chek if Matrix.math converge
-- finish global eps
-- global __str__ constats?
-- remove __call__
-- impelmet  __repr__
-- make linier eq solver using row operation.
-- matrix decometation
-- utils: least sqare method?
-- utils: polinom interpolering
-- ker, im
-- rank
-- Random matrix
-- test function4
-- standerize ASCII formant for math
+- implement norms
 
 struture:
-- make doctring for method with numpy formting
-- find where to place the Matrix.map method
-- find where to place matrix type functions
+- make doctring for method with google formting
 - implement exaption chek for all methods
+- test function
+- make validation functions
+- remove __call__
+- finish global eps
+- standerize ASCII formant for math
 
 types of matrices:
 - Block matrix
 - ones/zeros_like
+- Random matrix
 
 miscellaneous:
+- utils: least sqare method?
+- utils: polinom interpolering
+- impelmet  __repr__
+- matrix decometation
+- global __str__ constats?
