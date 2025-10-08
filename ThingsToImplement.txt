@@ -1,10 +1,12 @@
 things do do:
+- alow __getitem__ to return an submatrix if promptet with ":" like lists
 - Reduced row echelon form
 - liniar eq solver
 - nullity , rank
 - eigenvalues and eigenvectors
 - chek if Matrix.math converge
 - implement norms
+- implemnet some sort of boolian matrix map
 
 struture:
 - make doctring for method with google formting

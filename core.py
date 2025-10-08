@@ -6,7 +6,7 @@ from .exceptions import (
 from .mixins import (
         BinaryMatrixOperationsMixin, 
         UnaryMatrixOperationsMixin,
-        MatrixRowOperationsMixin,
+        ElementaryOperationsMixin,
         BooleanLogicMixin,
         ElementwiseComparisonMixin,
         MatrixFactoryMixin,
@@ -21,7 +21,7 @@ __all__ = ["Matrix"]
 class Matrix(
         BinaryMatrixOperationsMixin, 
         UnaryMatrixOperationsMixin,
-        MatrixRowOperationsMixin,
+        ElementaryOperationsMixin,
         BooleanLogicMixin,
         ElementwiseComparisonMixin,
         MatrixFactoryMixin,

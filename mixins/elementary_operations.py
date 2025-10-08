@@ -5,7 +5,7 @@ from ..exceptions import (
     IndexOutOfBoundsError,
 )
 
-class MatrixRowOperationsMixin:
+class ElementaryOperationsMixin:
     # === Elementary Row Operations ===
     def row_switching(self, i: int, j: int) -> Self:
         """
@@ -114,9 +114,9 @@ class MatrixRowOperationsMixin:
     def rank(self) -> int:
         pass
     
-    def kernel(self) -> int:
+    def nullity(self) -> int:
         pass
 
     # 
     RREF = property(reduced_row_echelon_form)
-    ker
+    
