@@ -256,7 +256,7 @@ class UnaryMatrixOperationsMixin:
         """
         # check if the inverse exists 
         determinant = self.det
-        if abs(determinant) < 1e-8:
+        if isinstance(determinant, int | float | complex) and abs(determinant) < 1e-8:
             raise SingularMatrixError(matrix=self, operation='inverse')
         
         return self.adj * (1/determinant)
