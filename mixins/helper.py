@@ -17,10 +17,18 @@ class HelperMixin:
         return self.rows == self.cols
     
     def _is_boolean_matrix(self):
-        return all([isinstance(value, bool) for row in self._data for value in row])
+        return all([isinstance(entry, bool) for entry in self])
     
     def _is_integer_matrix(self):
-        return all([value-round(value) == 0 for row in self._data for value in row])
+        if all(isinstance(entry, int) for entry in self):
+            return True
+        if all(isinstance(entry, float | int) for entry in self):
+            return all(isinstance(entry, int) or (entry-round(entry) == 0) for entry in self)
+        else:
+            return False
+    
+    def _is_floats_matrix(self):
+        return all(isinstance(entry, float | int) for entry in self)
     
     # === Helpers ===
     def _validate_other_type(self, other, *, operation: str = "<unspecified>", reason: str = 'Operand must be an "Matrix"') -> None:

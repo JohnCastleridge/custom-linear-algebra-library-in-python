@@ -7,15 +7,26 @@ things do do:
 - chek if Matrix.math converge
 - implement norms
 - implemnet some sort of boolian matrix map
+- chekk if liniar trasnformtaion is continues
+- arrange, linspace
+- reshape
+- facts abot matrix, syetrix self-adjunct, ect...
 
 struture:
+- typehinting
+    - make custum scaler "type" wit typehinting
+        - must have:
+            - add, supp mull, div
+                - for same class and int, float, complex?
+            - abs() that returns flout
 - make doctring for method with google formting
 - implement exaption chek for all methods
-- test function
+- test functions with pytest vectorice
 - make validation functions
 - remove __call__
 - finish global eps
 - standerize ASCII formant for math
+- readme file
 
 types of matrices:
 - Block matrix
