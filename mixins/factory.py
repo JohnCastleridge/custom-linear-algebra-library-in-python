@@ -1,4 +1,5 @@
 from math import sqrt, exp, pi
+from typing import Self, Any
 
 from ..exceptions import (
     InvalidDataError,
@@ -7,7 +8,7 @@ from ..exceptions import (
 
 class MatrixFactoryMixin:
     @classmethod
-    def identity(cls, n: int):
+    def identity(cls, n: int) -> Self:
         """
         Return the identity matrix of size n×n.
 
@@ -39,7 +40,7 @@ class MatrixFactoryMixin:
         ])
     
     @classmethod
-    def zeros(cls, n, m=None):
+    def zeros(cls, n: int, m: int | None = None) -> Self:
         """
         Return a zero (null) matrix of size n×m.
 
@@ -66,7 +67,7 @@ class MatrixFactoryMixin:
         # check if n and m are greater than 0
         if n <= 0:
             raise MatrixValueError(value=n, operation='zeros', reason='"n" must be greater than 0')
-        if m is not None or m <= 0:
+        if m is not None and m <= 0:
             raise MatrixValueError(value=m, operation='zeros', reason='"m" must be greater than 0')
         
         # shorthand for square zero matrix
@@ -80,7 +81,7 @@ class MatrixFactoryMixin:
         ])
     
     @classmethod
-    def ones(cls, n, m=None):
+    def ones(cls, n: int, m: int | None = None) -> Self:
         """
         Return a matrix of ones of size n×m.
 
@@ -121,7 +122,7 @@ class MatrixFactoryMixin:
         ])
 
     @classmethod
-    def exchange(cls, n: int):
+    def exchange(cls, n: int) -> Self:
         """
         Return the n×n exchange (anti-identity) matrix.
 
@@ -152,7 +153,7 @@ class MatrixFactoryMixin:
         ])
     
     @classmethod
-    def hilbert(cls, n: int):
+    def hilbert(cls, n: int) -> Self:
         """
         Return the n×n Hilbert matrix.
 
@@ -187,7 +188,7 @@ class MatrixFactoryMixin:
         ])
 
     @classmethod
-    def matrix_unit(cls, i, j, n, m=None):
+    def matrix_unit(cls, i: int, j: int, n: int, m: int | None = None) -> Self:
         """
         Return the matrix unit (standard basis matrix) ``E_{ij}`` of size n×m.
 
@@ -214,7 +215,7 @@ class MatrixFactoryMixin:
         return matrix
 
     @classmethod
-    def diagonal(cls, diagonals: list):
+    def diagonal(cls, diagonals: list[Any], n: int | None = None, m: int | None = None) -> Self:
         """
         Return a square diagonal matrix with the given diagonal entries.
 
@@ -235,14 +236,19 @@ class MatrixFactoryMixin:
         if not isinstance(diagonals, list) or not diagonals:
             raise InvalidDataError(obj=diagonals, expected_type='list', operation='diagonal', reason='"diagonals" must be an non-empty list')
         
+        if m is None:
+            m = len(diagonals)
+        if n is None:
+            n = len(diagonals)
+        
         return cls([
-            [diagonals[i] if i==j else 0
-             for j in range(len(diagonals))]
-             for i in range(len(diagonals))
+            [diagonals[i] if (i==j and (i < len(diagonals)) and (j < len(diagonals))) else 0
+             for j in range(n)]
+             for i in range(m)
         ])
     
     @classmethod
-    def vandermonde(cls, x: list):
+    def vandermonde(cls, x: list[Any]) -> Self:
         """
         Return the square Vandermonde matrix built from the samples ``x``.
 
@@ -273,7 +279,7 @@ class MatrixFactoryMixin:
  
      
     @classmethod
-    def fourier(cls, n: int, *, imag=complex(0,1), scale=True):
+    def fourier(cls, n: int, *, imag: Any=complex(0,1), scale: bool=True) -> Self:
         """
         Return the n×n discrete Fourier matrix.
 
