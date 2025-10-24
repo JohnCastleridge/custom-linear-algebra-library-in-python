@@ -38,11 +38,18 @@ class DunderMixin:
             return self._data[i-1][j-1] # convert from input 1-based to internal 0-based
 
         if isinstance(key[0], slice):
-            s = key[0]
-            if s.step == 0:
-                raise ValueError("slice step cannot be zero")
-            start, stop, step = s.indices(self.rows) # handles None, negatives, bounds
-            rows = list(range(start, stop, step))
+            start = key[0].start
+            stop  = key[0].stop
+            step  = key[0].step
+            # Handle empty 
+            start = start if start is not None else 1
+            stop  = stop  if stop  is not None else self.cols+1
+            step  = step  if step  is not None else 1
+            # Handle negetive 
+            start = start if start > 0 else self.cols+1 + start
+            stop  = stop  if stop  > 0 else self.cols+1 + stop
+            # list of included row idecis
+            rows  = list(range(start, stop, step))
         else: # if key[0] is int
             rows = [key[0]]
 
@@ -57,7 +64,7 @@ class DunderMixin:
             # Handle negetive 
             start = start if start > 0 else self.cols+1 + start
             stop  = stop  if stop  > 0 else self.cols+1 + stop
-            # list of included row idecis
+            # list of included cols idecis
             cols  = list(range(start, stop, step))
         else: # if key[1] is int
             cols = [key[1]]
