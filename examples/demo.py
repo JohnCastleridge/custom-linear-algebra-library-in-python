@@ -1,4 +1,4 @@
-from custom_matrix_lib_py.core import Matrix
+from matrixlib import Matrix, det, I
 from sympy import Symbol, Eq, solve, symbols
 
 r = Symbol('r', integer=True)
