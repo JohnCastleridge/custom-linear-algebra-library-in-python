@@ -1,5 +1,5 @@
 from matrixlib import Matrix, det, I
-from sympy import Symbol, Eq, solve, symbols
+from sympy import Symbol, Eq, solve
 
 r = Symbol('r', integer=True)
 λ = Symbol('λ')
@@ -12,7 +12,7 @@ P_A = det(A-λ*I(2))
 eq  = Eq(P_A, 0)
 print('P_A(λ)=', P_A)
 solutions = solve(eq, λ)
-A, v = symbols('A v', commutative=False)    
+ 
 
 for solution in solutions:
     print(f'λ = {solution}')

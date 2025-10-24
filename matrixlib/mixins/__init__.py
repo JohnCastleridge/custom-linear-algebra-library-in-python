@@ -5,7 +5,7 @@ from .boolean_logic              import BooleanLogicMixin
 from .factory                    import MatrixFactoryMixin
 from .dunder                     import DunderMixin
 from .math_operations            import MatrixMathMixin
-from .epsilon                    import EpsMixin
+from .globals                    import GlobalsMixin
 from .helper                     import HelperMixin
 
 __all__ = [
@@ -16,6 +16,6 @@ __all__ = [
     "MatrixFactoryMixin",
     "DunderMixin",
     "MatrixMathMixin",
-    "EpsMixin",
+    "GlobalsMixin",
     "HelperMixin",
 ]

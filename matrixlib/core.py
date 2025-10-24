@@ -11,7 +11,7 @@ from .mixins import (
         MatrixFactoryMixin,
         DunderMixin,
         MatrixMathMixin,
-        EpsMixin,
+        GlobalsMixin,
         HelperMixin,
 )
 
@@ -25,7 +25,7 @@ class Matrix(
         MatrixFactoryMixin,
         DunderMixin,
         MatrixMathMixin,
-        EpsMixin,
+        GlobalsMixin,
         HelperMixin,
     ):
     # === Initialization ===
