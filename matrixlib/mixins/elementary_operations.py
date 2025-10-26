@@ -108,7 +108,25 @@ class ElementaryOperationsMixin:
 
     # === NoName ===
     def reduced_row_echelon_form(self) -> Self:
-        pass
+        M = self
+        pivot = 1
+        for j in range(1, self.cols+1):
+            find_pivot = False
+            for i in range(pivot, self.rows+1):
+                if abs(M[i,j]) >= self.eps(): # chek if the elemnt we are tryng to make to an piviot elemnt is zero
+                    M = M.row_switching(i, pivot)
+                    M = M.row_multiplication(pivot,M[pivot,j]**-1)
+                    find_pivot = True
+                    break
+
+            if find_pivot:
+                for i in range(1, self.rows+1):
+                    if i == pivot:
+                        continue
+                    M = M.row_addition(i, pivot, -M[i,j])
+                pivot += 1
+        
+        return M
 
     # === NoName ===
     def rank(self) -> int:

@@ -1,4 +1,5 @@
 things do do:
+- make helper function that round of flots close to an integer to int
 - alow __getitem__ to return an submatrix if promptet with ":" like lists
 - Reduced row echelon form
 - liniar eq solver
@@ -14,19 +15,21 @@ things do do:
 
 struture:
 - typehinting
-    - make custum scaler "type" wit typehinting
+    - make custum scaler "type" for typehinting
         - must have:
             - add, supp mull, div
                 - for same class and int, float, complex?
-            - abs() that returns flout
+            - abs() that returns flout (can not recvire becaise of sympy objet do not do thisd)
 - make doctring for method with google formting
 - implement exaption chek for all methods
 - test functions with pytest vectorice
 - make validation functions
 - remove __call__
-- finish global eps
+- finish globals
 - standerize ASCII formant for math
 - readme file
+- __getitem__ implement slices.indecis() for cleaner code
+- make row_addition chek for adiation of the same row with mines oneself
 
 types of matrices:
 - Block matrix
