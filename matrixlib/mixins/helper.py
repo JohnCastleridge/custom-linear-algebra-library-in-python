@@ -1,3 +1,5 @@
+from typing import Self
+
 from ..exceptions import (
     MatrixError, 
     InvalidDimensionsError,
@@ -10,16 +12,39 @@ from ..exceptions import (
 )
 
 class HelperMixin:
-    def _have_same_size(self, other):
+    # === NoName ===
+    def _have_same_size(self, other: Self) -> bool:
         return self.rows == other.rows and self.cols == other.cols
     
-    def _is_square(self):
+    def _round_off(self) -> None:
+        rows, cols = self.rows, self.cols
+        if self._is_floats_matrix():
+            eps = type(self).eps()
+            for i in range(1, rows+1):
+                for j in range(1, cols+1):
+                    if abs(round(self[i,j]) - self[i,j]) <= eps:
+                        self[i,j] = int(round(self[i,j]))
+
+    def _triple_equal(self, other: Self) -> bool:
+        if not self._have_same_size(other):
+            return False
+        
+        eps = type(self).eps()
+        rows, cols = self.rows, self.cols
+
+        if self._is_floats_matrix() and other._is_floats_matrix():
+            return all(abs(self[i,j]-other[i,j]) <= eps for i in range(1, rows+1) for j in range( 1, cols+1))
+            
+        return all(self[i,j] == other[i,j] for i in range(1, rows+1) for j in range( 1, cols+1))
+    
+    # === NoName ===
+    def _is_square(self) -> bool:
         return self.rows == self.cols
     
-    def _is_boolean_matrix(self):
+    def _is_boolean_matrix(self) -> bool:
         return all([isinstance(entry, bool) for entry in self])
     
-    def _is_integer_matrix(self):
+    def _is_integer_matrix(self) -> bool:
         if all(isinstance(entry, int) for entry in self):
             return True
         if all(isinstance(entry, float | int) for entry in self):
@@ -27,21 +52,11 @@ class HelperMixin:
         else:
             return False
     
-    def _is_floats_matrix(self):
+    def _is_floats_matrix(self) -> bool:
         return all(isinstance(entry, float | int) for entry in self)
     
     # === Helpers ===
     def _validate_other_type(self, other, *, operation: str = "<unspecified>", reason: str = 'Operand must be an "Matrix"') -> None:
-        """Validate that ``other`` is the same (or subclass-compatible) type.
-
-        Args:
-            other: Right-hand-side operand to validate.
-            operation: Operation name used in error messages.
-
-        Raises:
-            InvalidDataError: If ``other`` is not an instance of ``type(self)``.
-        """
-
         if not isinstance(other, type(self)):
             raise InvalidDataError(
                 obj=other,
@@ -50,16 +65,7 @@ class HelperMixin:
                 reason=reason,
             )
         
-    def _validate_same_size(self, other, *, operation: str = "<unspecified>", reason: str = "Matrices have different dimensions") -> None:
-        """Validate that ``self`` and ``other`` have identical shapes.
-
-        Args:
-            other: Right-hand-side operand whose size is compared to ``self``.
-            operation: Operation name used in error messages.
-
-        Raises:
-            InvalidDimensionsError: If the operands have different dimensions.
-        """
+    def _validate_same_size(self, other: Self, *, operation: str = "<unspecified>", reason: str = "Matrices have different dimensions") -> None:
         if not self._have_same_size(other):
             raise InvalidDimensionsError(
                 first=self,
@@ -69,14 +75,6 @@ class HelperMixin:
             )
 
     def _validate_boolean_matrix(self, *, operation: str = "<unspecified>", reason: str = "Operand is not a boolean matrix") -> None:
-        """Validate that ``self`` is a boolean matrix.
-
-        Args:
-            operation: Operation name used in error messages.
-
-        Raises:
-            MatrixValueError: If ``self`` is not a boolean matrix.
-        """
         if not self._is_boolean_matrix():
             raise MatrixValueError(
                 value=self,

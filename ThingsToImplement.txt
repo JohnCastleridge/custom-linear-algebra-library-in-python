@@ -1,9 +1,7 @@
 things do do:
 - make helper function that round of flots close to an integer to int
-- alow __getitem__ to return an submatrix if promptet with ":" like lists
-- Reduced row echelon form
 - liniar eq solver
-- nullity , rank
+- nullity, rank
 - eigenvalues and eigenvectors
 - chek if Matrix.math converge
 - implement norms
@@ -12,6 +10,9 @@ things do do:
 - arrange, linspace
 - reshape
 - facts abot matrix, syetrix self-adjunct, ect...
+- alow vectors as input
+- make stadert basis factary mathod, and other basis legandre newten ecs
+- basis change matrix
 
 struture:
 - typehinting

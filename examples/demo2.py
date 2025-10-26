@@ -13,4 +13,4 @@ C = Matrix([[0,0,0],
             [0,3,4]])
 
 
-print(C.RREF)
+print(A.RREF._triple_equal(I(3)))
