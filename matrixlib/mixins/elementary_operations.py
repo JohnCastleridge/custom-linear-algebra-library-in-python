@@ -109,13 +109,17 @@ class ElementaryOperationsMixin:
     # === NoName ===
     def reduced_row_echelon_form(self) -> Self:
         M = self
+        eps = type(self).eps()
+        rows, cols = self.rows, self.cols
+
         pivot = 1
-        for j in range(1, self.cols+1):
+        for j in range(1, cols+1):
             find_pivot = False
-            for i in range(pivot, self.rows+1):
-                if abs(M[i,j]) >= self.eps(): # chek if the elemnt we are tryng to make to an piviot elemnt is zero
+            for i in range(pivot, rows+1):
+                # chek if the elemnt we are tryng to make to an piviot elemnt is zero
+                if abs(M[i,j]) >= eps:
                     M = M.row_switching(i, pivot)
-                    M = M.row_multiplication(pivot,M[pivot,j]**-1)
+                    M = M.row_multiplication(pivot, 1/M[pivot,j])
                     find_pivot = True
                     break
 
@@ -126,6 +130,9 @@ class ElementaryOperationsMixin:
                     M = M.row_addition(i, pivot, -M[i,j])
                 pivot += 1
         
+        if M._is_floats_matrix():
+            M._round_off()
+        
         return M
 
     # === NoName ===
@@ -135,6 +142,6 @@ class ElementaryOperationsMixin:
     def nullity(self) -> int:
         pass
 
-    # 
+    # === Aliases ===
     RREF = property(reduced_row_echelon_form)
     
