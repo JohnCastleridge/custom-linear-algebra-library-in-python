@@ -247,16 +247,23 @@ class BinaryMatrixOperationsMixin:
 
         Returns:
             Self: New matrix where each entry is ``func(self[i, j])``.
-
-        Examples:
-            Use to round values or apply non-linearities:
-
-        >>> A.map(abs)
-        >>> A.map(lambda x: round(x, 3))
         """
         rows, cols = self.rows, self.cols
         return self.__class__([
              [func(self[row,col])
               for col in range(1, cols+1)] 
               for row in range(1, rows+1)
+        ])
+
+    def augment(self, other: Self) -> Self:
+
+        op = "augment"
+        self._validate_other_type(other, operation = op, reason = 'Operand must be an "Matrix"')
+        if self.rows != other.rows:
+            raise InvalidDimensionsError(self, other, operation=op, reason="Matrices do not have the same number of rows")
+
+        return self.__class__([
+             [self[i,j] if j<=self.cols else other[i,j-self.cols] 
+              for j in range(1, self.cols+other.cols+1)]
+              for i in range(1, self.rows+1)
         ])
