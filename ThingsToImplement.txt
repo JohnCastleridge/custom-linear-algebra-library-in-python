@@ -1,7 +1,5 @@
 things do do:
-- make helper function that round of flots close to an integer to int
 - liniar eq solver
-- nullity, rank
 - eigenvalues and eigenvectors
 - chek if Matrix.math converge
 - implement norms
@@ -31,6 +29,7 @@ struture:
 - readme file
 - __getitem__ implement slices.indecis() for cleaner code
 - make row_addition chek for adiation of the same row with mines oneself
+- make name for all colations of methods
 
 types of matrices:
 - Block matrix

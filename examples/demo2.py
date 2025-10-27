@@ -12,5 +12,9 @@ C = Matrix([[0,0,0],
             [0,3,10],
             [0,3,4]])
 
+E = Matrix([[1,1,0],
+            [0,0,1],
+            [0,0,0]])
 
-print(A.RREF._triple_equal(I(3)))
+print(E.RREF)
+print(E.rank)

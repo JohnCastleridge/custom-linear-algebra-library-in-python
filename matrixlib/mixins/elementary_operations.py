@@ -114,6 +114,7 @@ class ElementaryOperationsMixin:
 
         pivot = 1
         for j in range(1, cols+1):
+            # skips cols with no piviot collum
             find_pivot = False
             for i in range(pivot, rows+1):
                 # chek if the elemnt we are tryng to make to an piviot elemnt is zero
@@ -136,11 +137,23 @@ class ElementaryOperationsMixin:
         return M
 
     # === NoName ===
+    @property
     def rank(self) -> int:
-        pass
+        M = self.RREF
+        eps = type(self).eps()
+        rows, cols = self.rows, self.cols
+        rank = 0
+        for i in range(1, rows+1):
+            for j in range(1, cols+1):
+                if abs(M[i,j]) > eps:
+                    rank += 1
+                    break
+        return rank
     
+    @property
     def nullity(self) -> int:
-        pass
+        dim = self.cols
+        return dim - self.rank
 
     # === Aliases ===
     RREF = property(reduced_row_echelon_form)
