@@ -194,7 +194,8 @@ class DunderMixin:
 
     
     def __or__(self, other: Self) -> Self: # |
-        #return self.elementwise_OR(other)
+        if self._is_boolean_matrix() and other._is_boolean_matrix():
+            return self.elementwise_OR(other)
         return self.augment(other)
 
     def __and__(self, other: Self) -> Self: # &&
