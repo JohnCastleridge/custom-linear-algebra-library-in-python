@@ -118,7 +118,7 @@ class ElementaryOperationsMixin:
             find_pivot = False
             for i in range(pivot, rows+1):
                 # chek if the elemnt we are tryng to make to an piviot elemnt is zero
-                if abs(M[i,j]) >= eps:
+                if abs(M[i,j]) >= eps: # may not work
                     M = M.row_switching(i, pivot)
                     M = M.row_multiplication(pivot, 1/M[pivot,j])
                     find_pivot = True
@@ -154,6 +154,13 @@ class ElementaryOperationsMixin:
     def nullity(self) -> int:
         dim = self.cols
         return dim - self.rank
+
+
+
+    def solve(self, other: Self) -> Self | None:
+        M = self.augment(other).RREF
+
+        
 
     # === Aliases ===
     RREF = property(reduced_row_echelon_form)

@@ -4,9 +4,10 @@ from sympy import Symbol, Eq, solve
 r = Symbol('r', integer=True)
 λ = Symbol('λ')
 
-A = Matrix([[1, 3],
-            [2, 0]])
+B = Matrix([[4,11,14],[8,7,-2]])
 
+A = B*B.T
+print(A)
 P_A = det(A-λ*I(2))
 
 eq  = Eq(P_A, 0)
@@ -17,10 +18,5 @@ solutions = solve(eq, λ)
 for solution in solutions:
     print(f'λ = {solution}')
 
-R = Matrix([[3, -1],
-            [2, 1]])
 
-D = Matrix([[3**r,       0],
-            [0   , (-2)**r]])
 
-print(5*R*D*~R)

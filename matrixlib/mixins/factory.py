@@ -317,6 +317,15 @@ class MatrixFactoryMixin:
         if scale: # make unitary
             F = F * 1/sqrt(n)
         return F
+    
+    @classmethod
+    def row_vector(cls, componetnts: list[Any], len: int=0) -> Self:
+        return cls([componetnts + [0 for _ in range(len)]])
+    
+    @classmethod
+    def column_vector(cls, componetnts: list[Any], len: int=0) -> Self:
+        return cls.row_vector(componetnts, len=len).T
+
         
 
 
@@ -326,6 +335,7 @@ class MatrixFactoryMixin:
     J = ones
     H = hilbert
     E = matrix_unit
-    D = diagonal
+    diag = diagonal
     V = vandermonde
     F = fourier
+    vec = column_vector
